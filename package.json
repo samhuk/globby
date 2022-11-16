@@ -1,6 +1,6 @@
 {
-  "name": "globby2",
-  "version": "0.0.1",
+  "name": "globsie",
+  "version": "0.0.2",
   "description": "Modernized fork of globby",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

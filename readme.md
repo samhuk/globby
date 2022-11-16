@@ -1,6 +1,6 @@
-<h1 align="center">globby2</h1>
+<h1 align="center">globsie</h1>
 <p align="center">
-  <em>Modernized fork of globby</em>
+  <em>Modernized fork of globby. NOTE: Work In Progress</em>
 </p>
 
 <p align="center">
@@ -14,7 +14,10 @@
 
 ## Overview
 
-Modernized fork of globby. CJS bundled.
+Modernized fork of [globby](https://github.com/sindresorhus/globby).
+
+* CJS bundled.
+* 100% Typescript.
 
 TODO:
 
