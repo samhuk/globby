@@ -30,18 +30,18 @@ const createFilterFunction = (isIgnored?: (_path: string) => boolean) => {
   return (fastGlobResult: any) => {
     const _path = fastGlobResult.path || fastGlobResult
     const pathKey = path.normalize(_path)
-    const seenOrIgnored = seen.has(pathKey) || (isIgnored && isIgnored(_path))
+    const seenOrIgnored = seen.has(pathKey) || isIgnored?.(_path)
     seen.add(pathKey)
     return !seenOrIgnored
   }
 }
 
 const getFilter = async (options: NormalizedOptions) => createFilterFunction(
-  options.ignore.length > 0 && await isIgnoredByIgnoreFiles(options.ignore, { cwd: options.cwd }),
+  options.ignore.length > 0 ? await isIgnoredByIgnoreFiles(options.ignore, { cwd: options.cwd }) : null,
 )
 
 const getFilterSync = (options: NormalizedOptions) => createFilterFunction(
-  options.ignore.length > 0 && isIgnoredByIgnoreFilesSync(options.ignore, { cwd: options.cwd }),
+  options.ignore.length > 0 ? isIgnoredByIgnoreFilesSync(options.ignore, { cwd: options.cwd }) : null,
 )
 
 const unionFastGlobResults = (
