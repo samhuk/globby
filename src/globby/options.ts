@@ -21,13 +21,13 @@ const checkCwdOption = (cwd: string | null | undefined) => {
 }
 
 export const normalizeOptions = (
-  options: Options,
+  options?: Options,
 ): NormalizedOptions => {
   const _options: NormalizedOptions = {
-    cwd: toPath(options.cwd) || process.cwd(),
-    ignore: normalizePatterns(options.ignore ?? []),
-    expandDirectories: options.expandDirectories ?? true,
-    gitignore: options.gitignore ?? false,
+    cwd: toPath(options?.cwd) || process.cwd(),
+    ignore: normalizePatterns(options?.ignore ?? []),
+    expandDirectories: options?.expandDirectories ?? true,
+    gitignore: options?.gitignore ?? false,
   }
 
   checkCwdOption(_options.cwd)
@@ -39,7 +39,7 @@ export const normalizeOptions = (
 }
 
 export const normalizeIsGitIgnoredOptions = (
-  options: IsGitIgnoredOptions,
+  options?: IsGitIgnoredOptions,
 ): NormalizedIsGitIgnoredOptions => ({
-  cwd: toPath(options.cwd) || process.cwd(),
+  cwd: toPath(options?.cwd) ?? process.cwd(),
 })

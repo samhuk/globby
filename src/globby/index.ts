@@ -21,7 +21,7 @@ const normalizeArgumentsSync = (
   fn: (patterns: string[], options: NormalizedOptions) => any,
 ) => async (
   patterns: string | string[],
-  options: Options,
+  options?: Options,
 ) => fn(normalizePatterns(patterns), normalizeOptions(options))
 
 const createFilterFunction = (isIgnored?: (_path: string) => boolean) => {
