@@ -1,6 +1,12 @@
 import { fileURLToPath } from 'url'
 import { Transform } from 'stream'
 
+export const slash = (path: string) => (
+  /^\\\\\?\\/.test(path)
+    ? path
+    : path.replace(/\\/g, '/')
+)
+
 export const toPath = (urlOrPath: string | URL) => (urlOrPath instanceof URL ? fileURLToPath(urlOrPath) : urlOrPath)
 
 export class FilterStream extends Transform {

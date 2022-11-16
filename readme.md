@@ -1,6 +1,6 @@
 <h1 align="center">globsie</h1>
 <p align="center">
-  <em>Modernized fork of globby. NOTE: Work In Progress</em>
+  <em>Modernized globby fork. NOTE: Work In Progress</em>
 </p>
 
 <p align="center">
@@ -18,6 +18,13 @@ Modernized fork of [globby](https://github.com/sindresorhus/globby).
 
 * CJS bundled.
 * 100% Typescript.
+* Use of modern syntax.
+* Industry standard ESLint adherance.
+* Avoid old & dangerous JS patterns.
+
+## Usage Overview
+
+See [globby](https://github.com/sindresorhus/globby).
 
 TODO:
 
