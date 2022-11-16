@@ -1,6 +1,7 @@
 import merge2 from 'merge2'
 import fastGlob from 'fast-glob'
 import dirGlob from 'dir-glob'
+import path from 'path'
 import {
   isIgnoredByIgnoreFiles,
   isIgnoredByIgnoreFilesSync,
@@ -27,9 +28,9 @@ const createFilterFunction = (isIgnored?: (_path: string) => boolean) => {
   const seen = new Set()
 
   return (fastGlobResult: any) => {
-    const path = fastGlobResult.path || fastGlobResult
-    const pathKey = path.normalize(path)
-    const seenOrIgnored = seen.has(pathKey) || (isIgnored?.(path))
+    const _path = fastGlobResult.path || fastGlobResult
+    const pathKey = path.normalize(_path)
+    const seenOrIgnored = seen.has(pathKey) || (isIgnored?.(_path))
     seen.add(pathKey)
     return !seenOrIgnored
   }
