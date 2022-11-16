@@ -30,7 +30,7 @@ const createFilterFunction = (isIgnored?: (_path: string) => boolean) => {
   return (fastGlobResult: any) => {
     const _path = fastGlobResult.path || fastGlobResult
     const pathKey = path.normalize(_path)
-    const seenOrIgnored = seen.has(pathKey) || (isIgnored?.(_path))
+    const seenOrIgnored = seen.has(pathKey) || (isIgnored && isIgnored(_path))
     seen.add(pathKey)
     return !seenOrIgnored
   }
