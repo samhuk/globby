@@ -1,5 +1,11 @@
-node_modules
-yarn.lock
-bench
-*.tmp
-tmp
+/node_modules
+/build
+/dist
+/build-test
+/build-ts
+/build-integration-test
+.DS_Store
+/debug.log
+/package-lock.json
+/build-examples
+/old
