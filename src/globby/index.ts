@@ -1,5 +1,5 @@
 import merge2 from 'merge2'
-import fastGlob from 'fast-glob'
+import fastGlob, { Entry } from 'fast-glob'
 import dirGlob from 'dir-glob'
 import path from 'path'
 import {
@@ -9,20 +9,6 @@ import {
 import { FilterStream, isNegativePattern, normalizePatterns } from './utilities'
 import { normalizeOptions } from './options'
 import { ExpandDirectoriesOption, NormalizedOptions, Options } from './types'
-
-const normalizeArguments = (
-  fn: (patterns: string[], options: NormalizedOptions) => any,
-) => async (
-  patterns: string | string[],
-  options: Options,
-) => fn(normalizePatterns(patterns), normalizeOptions(options))
-
-const normalizeArgumentsSync = (
-  fn: (patterns: string[], options: NormalizedOptions) => any,
-) => async (
-  patterns: string | string[],
-  options?: Options,
-) => fn(normalizePatterns(patterns), normalizeOptions(options))
 
 const createFilterFunction = (isIgnored?: (_path: string) => boolean) => {
   const seen = new Set()
@@ -154,38 +140,61 @@ const generateTasksSync = (patterns: string[], options: NormalizedOptions) => {
   })
 }
 
-export const globby = normalizeArguments(async (patterns, options) => {
+export const globby = async <
+  TOptions extends Options
+>(
+  patterns: string | string[],
+  options?: TOptions,
+): Promise<TOptions extends { objectMode: true } ? Entry[] : string[]> => {
+  const _patterns = normalizePatterns(patterns)
+  const _options = normalizeOptions(options)
   const [
     tasks,
     filter,
   ] = await Promise.all([
-    generateTasks(patterns, options),
-    getFilter(options),
+    generateTasks(_patterns, _options),
+    getFilter(_options),
   ])
   const results = await Promise.all(tasks.map(task => fastGlob(task.patterns, task.options)))
 
   return unionFastGlobResults(results, filter)
-})
+}
 
-export const globbySync = normalizeArgumentsSync((patterns, options) => {
-  const tasks = generateTasksSync(patterns, options)
-  const filter = getFilterSync(options)
+export const globbySync = <
+  TOptions extends Options
+>(
+    patterns: string | string[],
+    options?: TOptions,
+  ): (TOptions extends { objectMode: true } ? Entry[] : string[]) => {
+  const _patterns = normalizePatterns(patterns)
+  const _options = normalizeOptions(options)
+  const tasks = generateTasksSync(_patterns, _options)
+  const filter = getFilterSync(_options)
   const results = tasks.map(task => fastGlob.sync(task.patterns, task.options))
 
   return unionFastGlobResults(results, filter)
-})
+}
 
-export const globbyStream = normalizeArgumentsSync((patterns, options) => {
-  const tasks = generateTasksSync(patterns, options)
-  const filter = getFilterSync(options)
+export const globbyStream = (patterns: string | string[], options?: Options) => {
+  const _patterns = normalizePatterns(patterns)
+  const _options = normalizeOptions(options)
+  const tasks = generateTasksSync(_patterns, _options)
+  const filter = getFilterSync(_options)
   const streams = tasks.map(task => fastGlob.stream(task.patterns, task.options))
 
   return unionFastGlobStreams(streams, filter)
-})
+}
 
-export const isDynamicPattern = normalizeArgumentsSync(
-  (patterns, options) => patterns.some(pattern => fastGlob.isDynamicPattern(pattern, options)),
+export const isDynamicPattern = (patterns: string | string[], options?: Options) => {
+  const _patterns = normalizePatterns(patterns)
+  const _options = normalizeOptions(options)
+  return _patterns.some(pattern => fastGlob.isDynamicPattern(pattern, _options))
+}
+
+export const generateGlobTasks = (patterns: string | string[], options?: Options) => (
+  generateTasks(normalizePatterns(patterns), normalizeOptions(options))
 )
 
-export const generateGlobTasks = normalizeArguments(generateTasks)
-export const generateGlobTasksSync = normalizeArgumentsSync(generateTasksSync)
+export const generateGlobTasksSync = (patterns: string | string[], options?: Options) => (
+  generateTasksSync(normalizePatterns(patterns), normalizeOptions(options))
+)

@@ -24,10 +24,12 @@ export const normalizeOptions = (
   options?: Options,
 ): NormalizedOptions => {
   const _options: NormalizedOptions = {
+    ...options,
     cwd: toPath(options?.cwd) || process.cwd(),
     ignore: normalizePatterns(options?.ignore ?? []),
     expandDirectories: options?.expandDirectories ?? true,
     gitignore: options?.gitignore ?? false,
+    objectMode: options?.objectMode ?? false,
   }
 
   checkCwdOption(_options.cwd)
