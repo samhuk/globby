@@ -34,7 +34,7 @@ export const normalizeOptions = (
 
   checkCwdOption(_options.cwd)
 
-  if (options.gitignore)
+  if (_options.gitignore)
     _options.ignore.push(GITIGNORE_FILES_PATTERN)
 
   return _options
