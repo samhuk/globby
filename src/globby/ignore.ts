@@ -1,11 +1,13 @@
-import * as fs from 'fs'
-import path from 'path'
 import fastGlob from 'fast-glob'
+import * as fs from 'fs'
 import gitIgnore from 'ignore'
-import slash from 'slash'
-import { toPath, isNegativePattern } from './utilities'
-import { IsGitIgnoredOptions, NormalizedIsGitIgnoredOptions } from './types'
+import path from 'path'
+
 import { normalizeIsGitIgnoredOptions, normalizeOptions } from './options'
+import { IsGitIgnoredOptions, NormalizedIsGitIgnoredOptions } from './types'
+import { isNegativePattern, toPath } from './utilities'
+
+const slash = (p: string): string => (/^\\\\\?\\/.test(p) ? p : p.replace(/\\/g, '/'))
 
 type _File = {
   path: string
